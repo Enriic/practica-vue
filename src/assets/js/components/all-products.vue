@@ -60,6 +60,7 @@
                 });
             },
 
+            //HERE WE'RE GOING TO PUT A WATCHER TO LOOK FOR CHANGES IN SEARCHBAR WHILE FETCH 
             searchProducts: function()
             {
                 if(this.productSearch == '')

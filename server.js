@@ -98,8 +98,12 @@ app.patch('/api/product/edit/:id', function(req, res) {
                 product.name = req.body.name;
                 product.price = req.body.price;
 
-                products.splice(i, 1);
-                products.push(product);
+                // products.splice(i, 1);
+                // products.push(product);
+
+                products.splice(i,1,product)
+
+                //CHANGE DONE -> Line 101 & 102 -> 104
 
                 fs.writeFile(PRODUCTS_FILE, JSON.stringify(products, null, 4), function(err) {
                     if (err) {

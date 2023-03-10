@@ -39,7 +39,6 @@
                 notifications:[]
             }
         },
-
         methods: {
             addProduct: function()
             {
