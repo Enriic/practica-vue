@@ -4,7 +4,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-var PRODUCTS_FILE = path.join(__dirname, 'src/assets/js/components/product-data.json');
+var PRODUCTS_FILE = path.join(__dirname, 'src/assets/js/components/crypto-data.json');
+var ORDERS_FILE = path.join(__dirname, 'src/assets/js/components/order-data.json');
 
 app.set('port', (process.env.PORT || 3000));
 

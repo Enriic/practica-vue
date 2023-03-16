@@ -22,11 +22,9 @@
                 notifications:[]
             }
         },
-
         created: function(){
             this.getProduct();
         },
-
         methods: {
             getProduct: function()
             {
