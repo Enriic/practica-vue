@@ -1,0 +1,32 @@
+[
+    {
+      "id": 1,
+      "name": "Bitcoin",
+      "price": "57892.50"
+    },
+    {
+      "id": 2,
+      "name": "Ethereum",
+      "price": "1965.85"
+    },
+    {
+      "id": 3,
+      "name": "Binance Coin",
+      "price": "278.44"
+    },
+    {
+      "id": 4,
+      "name": "Cardano",
+      "price": "1.16"
+    },
+    {
+      "id": 5,
+      "name": "Polkadot",
+      "price": "34.60"
+    },
+    {
+      "id": 6,
+      "name": "Litecoin",
+      "price": "206.94"
+    }
+  ]
