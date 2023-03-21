@@ -13,7 +13,7 @@
       <div class="container container-cripto">
         <div class="col-md-4 mb-4" v-for="product in products">
             <div class="card text-center" >
-                <img class="card-img-top" src="https://th.bing.com/th/id/R.0c16da53e571400e98f17f301bbd5095?rik=sfG96qwgK%2bCnrA&riu=http%3a%2f%2fthewowstyle.com%2fwp-content%2fuploads%2f2015%2f01%2f3d-abstract_widewallpaper_nature-frame_47491.jpg&ehk=sFkfjuAQ1aL9MnmnIGgrISKaM1F52frOH51KKgb51D0%3d&risl=&pid=ImgRaw&r=0" alt="product" /> 
+                <img class="card-img-top" :src="product.imageURL" alt="product" style="width: 75px; height: 75px;" /> 
                 <div class="card-body">
                     <h3 class="card-title">{{product.name}}</h3>
                     <p class="price mt-3">{{product.price}}</p>    

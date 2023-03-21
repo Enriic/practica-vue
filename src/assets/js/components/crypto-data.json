@@ -2,31 +2,37 @@
     {
       "id": 1,
       "name": "Bitcoin",
-      "price": "57892.50"
+      "price": "57892.50",
+      "imageURL":"https://th.bing.com/th/id/OIP.WxQIYr4LyUI6-8YhyxS5egHaHa?pid=ImgDet&rs=1"
     },
     {
       "id": 2,
       "name": "Ethereum",
-      "price": "1965.85"
+      "price": "1965.85",
+      "imageURL":"https://th.bing.com/th/id/OIP.ZZSxbwfHx0kf4TNqEDTJ3QHaHa?pid=ImgDet&rs=1"
     },
     {
       "id": 3,
       "name": "Binance Coin",
-      "price": "278.44"
+      "price": "278.44",
+      "imageURL":"https://th.bing.com/th/id/OIP.Ng3nfw8n5NxxdajMG02H6wHaHa?pid=ImgDet&rs=1"
     },
     {
       "id": 4,
       "name": "Cardano",
-      "price": "1.16"
+      "price": "1.16",
+      "imageURL":"https://icons-for-free.com/iconfiles/png/512/cardano+icon-1320162855683510157.png"
     },
     {
       "id": 5,
       "name": "Polkadot",
-      "price": "34.60"
+      "price": "34.60",
+      "imageURL":"https://th.bing.com/th/id/OIP.Gh6uJ6s3BXDDI5LQZ73r9AHaHa?pid=ImgDet&rs=1"
     },
     {
       "id": 6,
       "name": "Litecoin",
-      "price": "206.94"
+      "price": "206.94",
+      "imageURL":"https://vignette.wikia.nocookie.net/cryptocurrency/images/5/5d/Litecoin.png/revision/latest?cb=20140316100431"
     }
   ]

@@ -29,7 +29,7 @@
     </div>
 </template>
 
-<script>
+    <script>
     import Notification from './notifications.vue';
 
     export default{
@@ -89,4 +89,4 @@
             'notification' : Notification
         }
     }
-</script>
+    </script>
