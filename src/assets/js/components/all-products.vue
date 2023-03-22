@@ -7,7 +7,7 @@
                 <img class="card-img-top" :src="product.imageURL" alt="product" style="width: 75px; height: 75px;" /> 
                 <div class="card-body">
                     <h3 class="card-title">{{product.name}}</h3>
-                    <p class="price mt-3">{{product.price}}</p>    
+                    <p class="price mt-3">{{product.price}}$</p>    
                     <button class="btn bg-dark text-white">Get Info</button>
                 </div>                    
             </div>
@@ -16,7 +16,7 @@
     </div>
   </template>
   
-  <script>
+<script>
     export default {
 
       data() {
@@ -49,12 +49,9 @@
         },
         
         searchProducts(productSearch) {
-          console.log('Listening')
           if (productSearch === '') {
-            // Si no hay texto de búsqueda, mostrar todos los productos
             this.products = this.originalProducts;
           } else {
-            // Filtrar la lista original de productos por el texto de búsqueda
             this.products = this.originalProducts.filter(product => {
               return product.name.toLowerCase().includes(productSearch.toLowerCase());
             });
@@ -63,7 +60,7 @@
       },
       
     }
-  </script>
+</script>
   
 <style>
     @import url('../../css/style.css');

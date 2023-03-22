@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar">
       <div class="container container-navbar">
-        <a class="navbar-brand" href="#">My Website</a>
+       <router-link :to="{ name: 'all_products' }" class="navbar-brand">My Website</router-link>
         <form class="search-form">
           <input type="text" class="form-control" placeholder='Search' v-model="searchTerm">
         </form>
