@@ -3,7 +3,7 @@
       <div class="container container-navbar">
         <a class="navbar-brand" href="#">My Website</a>
         <form class="search-form">
-          <input type="text" class="form-control" placeholder='Search' v-model="productSearch">
+          <input type="text" class="form-control" placeholder='Search' v-model="searchTerm">
         </form>
         <ul class="navbar-nav">
           <li class="nav-item" v-for="(item, index) in navItems" :key="index">
@@ -14,9 +14,9 @@
     </nav>
   </template>
   
-  <script>
+<script>
     export default {
-      name: 'Navbar',
+      name: 'navbar',
       data() {
         return {
           navItems: [
@@ -24,19 +24,17 @@
             { text: 'About', link: '#' },
             { text: 'Contact', link: '#' },
           ],
-          productSearch:''
+          searchTerm:''
         };
       },
       watch: {
-        productSearch(searchText){
-            this.$emit('search',searchText)
-            console.log('Emited '+searchText)
-            
-            this.$store.dispatch('updateSearchBar',newVal)
+        searchTerm(newVal){
+            this.$root.$emit('search',newVal)
+            console.log('Emited '+newVal)
         }
       }
     };
-  </script>
+</script>
   
   <style>
 

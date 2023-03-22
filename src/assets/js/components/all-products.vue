@@ -17,9 +17,8 @@
   </template>
   
   <script>
-
     export default {
-      
+
       data() {
         return {
           products: [],
@@ -32,13 +31,11 @@
       },
       mounted() {
         console.log('Mounted')
-        this.$on('search', (textSearch) => {
-          this.searchProducts(textSearch);
-        });
+        this.$root.$on('search', this.searchProducts);
       },
       beforeDestroy() {
         console.log('Destroying')
-        this.$off('search', this.searchProducts)
+        this.$root.$off('search', this.searchProducts)
       },
       
       methods: {
