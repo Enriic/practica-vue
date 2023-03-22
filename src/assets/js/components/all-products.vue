@@ -1,14 +1,5 @@
 <template>
     <div id="all-products">
-      <h1 class="text-center mb-5">All Products</h1>
-  
-      <div class="d-flex justify-content-end mb-3">
-        <router-link :to="{ name: 'create_product' }" class="btn btn-primary">Create Product</router-link>
-      </div>
-  
-      <div class="form-group mb-3">
-        <input type="text" name="search" v-model="productSearch" placeholder="Search products" class="form-control" v-on:keyup="searchProducts">
-      </div>
   
       <div class="container container-cripto">
         <div class="col-md-4 mb-4" v-for="product in products">
@@ -26,19 +17,30 @@
   </template>
   
   <script>
+
     export default {
+      
       data() {
         return {
           products: [],
           originalProducts: [],
-          productSearch: ''
         }
       },
-  
+      
       created() {
         this.fetchProductData();
       },
-  
+      mounted() {
+        console.log('Mounted')
+        this.$on('search', (textSearch) => {
+          this.searchProducts(textSearch);
+        });
+      },
+      beforeDestroy() {
+        console.log('Destroying')
+        this.$off('search', this.searchProducts)
+      },
+      
       methods: {
         fetchProductData() {
           this.$http.get('http://localhost:3000/api/products').then((response) => {
@@ -48,24 +50,21 @@
   
           });
         },
-  
-        searchProducts() {
-          if(this.productSearch == '') {
+        
+        searchProducts(productSearch) {
+          console.log('Listening')
+          if (productSearch === '') {
+            // Si no hay texto de búsqueda, mostrar todos los productos
             this.products = this.originalProducts;
-            return;
+          } else {
+            // Filtrar la lista original de productos por el texto de búsqueda
+            this.products = this.originalProducts.filter(product => {
+              return product.name.toLowerCase().includes(productSearch.toLowerCase());
+            });
           }
-  
-          var searchedProducts = [];
-          for(var i = 0; i < this.originalProducts.length; i++) {
-            var productName = this.originalProducts[i]['name'].toLowerCase();
-            if(productName.indexOf(this.productSearch.toLowerCase()) >= 0) {
-              searchedProducts.push(this.originalProducts[i]);
-            }
-          }
-  
-          this.products = searchedProducts;
         }
-      }
+      },
+      
     }
   </script>
   

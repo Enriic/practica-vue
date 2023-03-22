@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from './store'
 
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
@@ -6,7 +7,10 @@ Vue.use(VueRouter)
 import VueResource from 'vue-resource';
 Vue.use(VueResource);
 
-import App from './App.vue'
+import App from './App.vue';
+import Navbar from './assets/js/components/navbar.vue';
+Vue.component('navbar', Navbar);
+
 
 const AllProducts = require('./assets/js/components/all-products.vue');
 const CreateProduct = require('./assets/js/components/create-product.vue');
@@ -35,5 +39,14 @@ const routes = [
         component: DeleteProduct
     }
 ];
+
+
+
 var router = new VueRouter({ routes: routes, mode: 'history' });
-new Vue(Vue.util.extend({ router }, App)).$mount('#app');
+
+
+new Vue(
+    Vue.util.extend({ 
+        router,
+}, App)).$mount('#app');
+
