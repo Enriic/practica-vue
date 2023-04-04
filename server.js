@@ -37,6 +37,22 @@ app.get('/api/products', function(req, res) {
 });
 
 
+app.get('/api/productsid', function(req, res) {
+    fs.readFile(PRODUCTS_FILE, function(err, data) {
+        if (err) {
+            console.error(err);
+            process.exit(1);
+        }
+        var json = JSON.parse(data);
+        var ids = json.map(function(product) {
+            return product.id;
+        });
+        res.json(ids);
+    });
+});
+
+
+
 app.get('/api/product/:id', function(req, res) {
 
     fs.readFile(PRODUCTS_FILE, function(err, data) {

@@ -1,20 +1,12 @@
 <template>
     <div id="all-products">
-  
       <div class="container container-cripto">
-        <div class="col-md-4 mb-4" v-for="product in products">
-            <div class="card text-center" >
-                <img class="card-img-top" :src="product.imageURL" alt="product" style="width: 75px; height: 75px;" /> 
-                <div class="card-body">
-                    <h3 class="card-title">{{product.name}}</h3>
-                    <p class="price mt-3">{{product.price}}$</p>    
-                    <button class="btn bg-dark text-white">Get Info</button>
-                </div>                    
-            </div>
+        <div class="col-md-4 mb-4" v-for="id in productsid">
+            <coin :id="id"></coin>
+        </div>
       </div>
     </div>
-    </div>
-  </template>
+</template>
   
 <script>
     export default {
@@ -23,11 +15,13 @@
         return {
           products: [],
           originalProducts: [],
+          productsid: []
         }
       },
       
       created() {
-        this.fetchProductData();
+        this.fetchProductIdData();
+        this.setInterval(this.refreshIds, 10000);
       },
       mounted() {
         console.log('Mounted')
@@ -39,13 +33,17 @@
       },
       
       methods: {
-        fetchProductData() {
-          this.$http.get('http://localhost:3000/api/products').then((response) => {
-            this.products = response.body;
-            this.originalProducts = this.products;
+
+        fetchProductIdData() {
+          this.$http.get('http://localhost:3000/api/productsid').then((response) => {
+            this.productsid = response.body;
           }, (response) => {
   
           });
+        },
+
+        refreshIds() {
+          this.fetchProductIdData();
         },
         
         searchProducts(productSearch) {
@@ -63,5 +61,5 @@
 </script>
   
 <style>
-    @import url('../../css/style.css');
+    
 </style>

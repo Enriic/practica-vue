@@ -11,6 +11,9 @@ import App from './App.vue';
 import Navbar from './assets/js/components/navbar.vue';
 Vue.component('navbar', Navbar);
 
+import Coin from './assets/js/components/coin.vue';
+Vue.component('coin', Coin);
+
 
 const AllProducts = require('./assets/js/components/all-products.vue');
 const CreateProduct = require('./assets/js/components/create-product.vue');
@@ -43,7 +46,8 @@ const routes = [
         name: 'show_product',
         path: '/:id',
         component: ShowProduct
-    }
+    },
+
 ];
 
 
