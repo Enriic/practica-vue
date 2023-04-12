@@ -27,8 +27,7 @@
             getCoin()
             {
                 this.$http.get('http://localhost:3000/api/product/' + this.id).then((response) => {
-                    this.coin = response.body;
-                    
+                    this.coin = response.body;  
                 }, (response) => {
 
                 });
@@ -54,6 +53,7 @@
     margin: 20px;
     width: 18rem;
     padding: 2.5rem 0.5rem 0.5rem 0.5rem;
+    cursor: pointer;
 }
 
 .card-body{

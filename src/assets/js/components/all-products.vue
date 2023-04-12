@@ -8,20 +8,18 @@
     </div>
 </template>
   
-<script>
+ <script>
     export default {
 
       data() {
         return {
-          products: [],
-          originalProducts: [],
           productsid: []
         }
       },
       
       created() {
         this.fetchProductIdData();
-        this.setInterval(this.refreshIds, 10000);
+        this.setInterval(this.fetchProductIdData, 10000);
       },
       mounted() {
         console.log('Mounted')
@@ -41,20 +39,6 @@
   
           });
         },
-
-        refreshIds() {
-          this.fetchProductIdData();
-        },
-        
-        searchProducts(productSearch) {
-          if (productSearch === '') {
-            this.products = this.originalProducts;
-          } else {
-            this.products = this.originalProducts.filter(product => {
-              return product.name.toLowerCase().includes(productSearch.toLowerCase());
-            });
-          }
-        }
       },
       
     }

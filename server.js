@@ -51,6 +51,26 @@ app.get('/api/productsid', function(req, res) {
     });
 });
 
+//Retorna llista de ids de productes coincidents amb el nom.. working on it
+app.get('/api/productsid/name', function(req, res) {
+    fs.readFile(PRODUCTS_FILE, function(err, data) {
+        if (err) {
+            console.error(err);
+            process.exit(1);
+        }
+        var json = JSON.parse(data);
+        var name = req.query.name; 
+        if (name) {
+            json = json.filter(function(product) {
+                return product.name.toLowerCase().includes(name.toLowerCase());
+            });
+        }
+        var ids = json.map(function(product) {
+            return product.id;
+        });
+        res.json(ids);
+    });
+});
 
 
 app.get('/api/product/:id', function(req, res) {
