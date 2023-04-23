@@ -47,10 +47,10 @@
 <style>
 
 
-.card {
+.card{
     border-radius: 2px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-    margin: 20px;
+    margin-top: 3rem;
     width: 18rem;
     padding: 2.5rem 0.5rem 0.5rem 0.5rem;
     cursor: pointer;

@@ -78,16 +78,21 @@
 
   .container-navbar{
       display: inline-flex;
+      margin: 0rem;
+      padding: 0.4rem;
+      border: 2px green solid;
   }
 
   .navbar {
-    display: flex;
+    display: block;
     justify-content: space-between;
     align-items: center;
     font-weight: 400;
-    background-color: #ffffff;
+    margin: -2.7rem;
+    background-color: #dfdfdf;
     padding: 1rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 2px black solid;
   }
 
   .navbar-nav {
