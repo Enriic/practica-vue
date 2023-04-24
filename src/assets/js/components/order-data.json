@@ -1,0 +1,44 @@
+[
+    {
+        "transaction_id": 1,
+        "amount": 0.5,
+        "cryptocurrency_id": 1,
+        "timestamp": "2023-04-24T15:30:00Z",
+        "crypto_price": 54000.67
+    },
+    {
+        "transaction_id": 2,
+        "amount": 1.2,
+        "cryptocurrency_id": 2,
+        "timestamp": "2023-04-23T10:15:00Z",
+        "crypto_price": 6500.22
+    },
+    {
+        "transaction_id": 3,
+        "amount": 2,
+        "cryptocurrency_id": 4,
+        "timestamp": "2023-04-22T17:45:00Z",
+        "crypto_price": 15000.98
+    },
+    {
+        "transaction_id": 4,
+        "amount": 0.8,
+        "cryptocurrency_id": 6,
+        "timestamp": "2023-04-21T14:20:00Z",
+        "crypto_price": 2100.73
+    },
+    {
+        "transaction_id": 5,
+        "amount": 2,
+        "cryptocurrency_id": 2,
+        "timestamp": "2023-04-21 18:45:00",
+        "crypto_price": 6500.22
+    },
+    {
+        "transaction_id": 6,
+        "amount": 3.75,
+        "cryptocurrency_id": 4,
+        "timestamp": "2023-04-20 12:00:00",
+        "crypto_price": 15000.98
+    }
+]
