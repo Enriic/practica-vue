@@ -1,7 +1,7 @@
 <template>
     <div id="all-products">
 
-      <div class="container container-filter">
+      <!-- <div class="container container-filter">
         <h3>Filtrar por:</h3>
         
         <div class="filter-group">
@@ -17,7 +17,7 @@
        
         
         <button class="btn btn-primary btn-block mt-4">Aplicar filtros</button>
-      </div>
+      </div> -->
 
       <div class="container container-cripto">
         <div class="row">
@@ -82,8 +82,8 @@
       padding: 1rem;
       float: left;
       width: 15%;
-      border: 2px rgb(0, 4, 255) solid;
-    }
+      /* border: 2px rgb(0, 4, 255) solid;*/
+    } 
 
     
 </style>

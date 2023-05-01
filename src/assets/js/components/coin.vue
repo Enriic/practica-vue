@@ -11,7 +11,7 @@
             </div>
 
             <div class="btn-container" id="btn-info">
-                <button class="btn bg-dark text-white" id="getInfoBtn" ref="btn" @click.stop="flipCard()">See transactions</button>
+                <button class="btn bg-dark text-white flip-btn" id="getInfoBtn" ref="btn" @click.stop="flipCard()">See transactions</button>
             </div>
 
             <div class="card-back">
@@ -82,9 +82,6 @@ export default {
         flipCard() {
             this.flipped = !this.flipped;
             const cardCoin = this.$refs.card;
-            // const btn = this.$refs.btn;            
-            // if(this.flipped) btn.textContent ="See product";
-            // btn.textContent = "See transactions";
             
             cardCoin.classList.toggle("is-flipped");
             
@@ -107,6 +104,7 @@ export default {
     height: 23rem;
     padding: 2.5rem 0.5rem 0.5rem 0.5rem;
     cursor: pointer;
+    z-index: 1;
 }
 
 .card-body {
@@ -163,6 +161,11 @@ export default {
     margin-bottom: 0.5rem;
     width: 100%;
     padding: 0.5rem;
+}
+
+
+.flip-btn:focus{
+    outline: none;
 }
 
 </style>
