@@ -1,8 +1,5 @@
 <template>
   <nav class="navbar">
-
-    
-   
     <div class="container container-navbar">
       <router-link :to="{ name: 'all_products' }" class="navbar-brand">LOGO</router-link>
       <ul class="navbar-nav">
@@ -11,29 +8,35 @@
           <a class="nav-link" :href="item.link">{{ item.text }}</a>
         </li>
 
-        <div class="search">
-          <span v-on:click="handleSpanClick()">
-            <i class="fas fa-search"></i>
-          </span>
-
-          <div :class="{ 'search-bar-container': true, 'search-bar-container--active': showSearchBar }">
-            <input type="text" placeholder="Search" v-model="searchTerm" />
-            <ul v-if="items.length > 0" class="search-results">
-              <li v-for="(item, index) in items" :key="index">
-                <div class="search-result-item" @click="handleClick(item.id)">
-                  <div class="search-result-img">
-                    <img :src="item.imageURL" alt="Product image" class="result-img" />
-                  </div>
-                  <div class="search-result-name">{{ item.name }}</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-
       </ul>
-    </div>
 
+      <div class="search">
+        <span v-on:click="handleSpanClick()">
+          <i class="fas fa-search"></i>
+        </span>
+
+        <div :class="{ 'search-bar-container': true, 'search-bar-container--active': showSearchBar }">
+          <input type="text" placeholder="Search" v-model="searchTerm" />
+          <ul v-if="items.length > 0" class="search-results">
+            <li v-for="(item, index) in items" :key="index">
+              <div class="search-result-item" @click="handleClick(item.id)">
+                <div class="search-result-img">
+                  <img :src="item.imageURL" alt="Product image" class="result-img" />
+                </div>
+                <div class="search-result-name">{{ item.name }}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    
+     
+      <span class="toggle-span">
+        <i class="fas fa-bars"></i>
+      </span>
+      
+    
+    </div>
   </nav>
 </template>
 
@@ -50,7 +53,7 @@ export default {
       searchTerm: '',
       items: [],
       itemsid: [],
-      showSearchBar: false
+      showSearchBar: true
     };
   },
   watch: {
@@ -124,6 +127,7 @@ export default {
 .navbar {
   margin: -2.7rem;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  gap: 2rem;  
 }
 
 .navbar-nav {
@@ -135,7 +139,7 @@ export default {
 }
 
 .nav-item {
-  margin: 1.5rem 2rem 0rem 3.5rem;
+  margin: 1.5rem 2rem 0rem 3rem;
 }
 
 .nav-link {
@@ -166,14 +170,12 @@ export default {
 .search {
   position: relative;
   display: flex;
-  gap: 1rem;
-  width: 35%;
+  width: 200%;
 }
 
 .fa-search {
   margin-top: 2rem;
-  margin-left: 2.5rem;
-  position: absolute;
+  position: relative;
   color: #000000;
   font-size: 1.5rem;
 }
@@ -185,15 +187,15 @@ export default {
 
 .search-bar-container {
   transform: scaleX(0);
-  transition : transform 0.3s ease-in-out;
-  margin: 1rem 2.5rem 0rem 5rem;
+  transition: transform 0.3s ease-in-out;
+  margin: 1rem 1.5rem;
 }
 
 .search-bar-container--active {
   transform: scaleX(1);
   transition: transform 0.3s ease-in-out;
   z-index: 2;
-  width: 100%;
+  width: 40%;
   height: 100%;
   position: relative;
 }
@@ -260,20 +262,41 @@ input:focus {
   height: 100%;
 }
 
+/* Toogle */
+
+.fa-bars {
+  position: relative;
+  display: none;
+}
+
+.fa-bars:hover {
+  cursor: pointer;
+  font-size: 2.25rem;
+}
+
 
 /* Media Queries */
 
 @media (max-width: 768px) {
-  
+
   .container-navbar {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
   }
 
-
   .navbar-nav {
+    position: absolute;
     margin-left: 0;
     gap: 1.5rem;
+    display: none;
+  }
+
+  .fa-bars{
+    display: flex;
+    font-size: 2rem;
+    position: relative;
+    margin-left: 1rem;
+    margin-top: 1rem;
   }
 
   .nav-item {
@@ -281,12 +304,15 @@ input:focus {
   }
 
   .search {
+    margin-bottom: 1rem;
     position: relative;
-    width: 100%;
+    width: 70%;
+    gap: 0rem;
   }
 
   .fa-search {
     position: absolute;
+    display: none;
   }
 
   .search-bar-container {

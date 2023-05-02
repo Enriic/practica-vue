@@ -117,13 +117,13 @@ export default {
 }
 
 .card-title {
-    font-size: 18px;
+    font-size: 1.7rem;
     font-weight: bold;
 }
 
 .card-text {
     margin-top: 2px;
-    font-size: 16px;
+    font-size: 1.1rem;
     font-weight: 800;
 }
 
@@ -143,10 +143,8 @@ export default {
     transform: rotateY(180deg);
 }
 
-.card-back .card-title{
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: -1rem;
+.card-back .card-body{
+    font-size: 1.3rem;
 }
 .card-coin div{
     position: absolute;
@@ -166,6 +164,26 @@ export default {
 
 .flip-btn:focus{
     outline: none;
+}
+
+/* Media Queries */
+
+@media (max-width: 768px) {
+   .card-coin{
+    width: 15rem;
+    height: 19rem;
+   }  
+   
+   .card-back .card-title{
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: -1rem;
+    }
+
+    .card-back .card-body{
+        font-size: 1.1rem;
+    }
+
 }
 
 </style>

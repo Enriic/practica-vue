@@ -21,7 +21,7 @@
 
       <div class="container container-cripto">
         <div class="row">
-          <div class="col-md-4 col-sm-6 col-lg-3" v-for="id in productsid">
+          <div class="col-md-4 col-sm-6 col-lg-3 col-xs-6" v-for="id in productsid">
               <coin :id="id"></coin>
           </div>
         </div>
@@ -84,6 +84,11 @@
       width: 15%;
       /* border: 2px rgb(0, 4, 255) solid;*/
     } 
+
+
+    /* Media queries */
+
+    
 
     
 </style>
