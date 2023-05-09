@@ -4,8 +4,8 @@
       <router-link :to="{ name: 'all_products' }" class="navbar-brand">LOGO</router-link>
       <ul class="navbar-nav">
 
-        <li class="nav-item" v-for="(item, index) in navItems" :key="index">
-          <a class="nav-link" :href="item.link">{{ item.text }}</a>
+        <li class="nav-item" v-for="(item, index) in navItems" :key="index" v-on:click="handleNavItemClick()">
+          <router-link :to="{ name: 'all_products' }" class="nav-link">{{ item.text }}</router-link>
         </li>
 
       </ul>
@@ -29,15 +29,25 @@
           </ul>
         </div>
       </div>
-    
-     
-      <span class="toggle-span">
+
+
+      <span class="toggle-span" v-on:click="handleSideBarClick()">
         <i class="fas fa-bars"></i>
       </span>
-      
-    
+
+      <div :class="{ 'sidebar': true, 'sidebar--active': showSidebar }">
+        <ul class="sidebar-menu">
+          <li class="nav-item" v-for="(item, index) in navItems" :key="index" v-on:click="handleNavItemClick()">
+            <router-link :to="{ name: 'all_products' }" class="nav-link">{{ item.text }}</router-link>
+          </li>
+        </ul>
+      </div>
+
+
     </div>
   </nav>
+
+  <!-- Set toogle nav with items -->
 </template>
 
 <script>
@@ -53,7 +63,8 @@ export default {
       searchTerm: '',
       items: [],
       itemsid: [],
-      showSearchBar: true
+      showSearchBar: true,
+      showSidebar: false
     };
   },
   watch: {
@@ -91,8 +102,14 @@ export default {
       } else {
         input.blur()
       }
+    },
+    handleSideBarClick() {
+      this.showSidebar = !this.showSidebar
+    },
+    handleNavItemClick() {
+      this.showSidebar = false
     }
-
+    
   }
 };
 </script>
@@ -127,7 +144,7 @@ export default {
 .navbar {
   margin: -2.7rem;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  gap: 2rem;  
+  gap: 2rem;
 }
 
 .navbar-nav {
@@ -251,7 +268,6 @@ input:focus {
 }
 
 .search-result-name {
-
   font-weight: 600;
   font-size: 1.5rem;
   line-height: 3rem;
@@ -262,7 +278,7 @@ input:focus {
   height: 100%;
 }
 
-/* Toogle */
+/* Toogle Icon*/
 
 .fa-bars {
   position: relative;
@@ -272,6 +288,28 @@ input:focus {
 .fa-bars:hover {
   cursor: pointer;
   font-size: 2.25rem;
+}
+
+/* SideBar */
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  max-width: 280px;
+  height: 100%;
+  transform: translateX(-100%);
+  background-color: #f5f5f5;
+  z-index: 1;
+}
+
+.sidebar-menu{
+  padding-top: 1rem;
+}
+
+.sidebar-menu .nav-item{
+  padding-bottom: 1rem;
 }
 
 
@@ -291,7 +329,7 @@ input:focus {
     display: none;
   }
 
-  .fa-bars{
+  .fa-bars {
     display: flex;
     font-size: 2rem;
     position: relative;
@@ -327,6 +365,20 @@ input:focus {
   .search-bar-container--active {
     width: 100%;
     position: relative;
+  }
+
+  .nav-container {
+    transform: scaleX(1);
+  }
+
+  .sidebar--active {
+    margin-top: 10rem;
+    position: fixed;
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+    z-index: 2;
+    border-top: 2px solid grey;
+    border-right: 2px solid grey;
   }
 
 }
