@@ -6,21 +6,22 @@
                 <div class="card-body">
                     <h3 class="card-title">{{ coin.name }}</h3>
                     <p class="price mt-3">{{ coin.price }}$</p>
-                    
+
                 </div>
             </div>
 
             <div class="btn-container" id="btn-info">
-                <button class="btn bg-dark text-white flip-btn" id="getInfoBtn" ref="btn" @click.stop="flipCard()">See transactions</button>
+                <button class="btn bg-dark text-white flip-btn" id="getInfoBtn" ref="btn" @click.stop="flipCard()">See
+                    transactions</button>
             </div>
 
             <div class="card-back">
                 <h4 class="card-title mb-3">Last Transaction</h4>
                 <div class="card-body" v-if="transactions.length > 0 && (flipped = true)">
                     <p class="price mt-3"> Order price:</p>
-                    <p class="price mt-3"> {{ transactions[0].crypto_price }}$</p>
+                    <p class="price mt-3"> {{ transactions[0].total_amount }}$</p>
                     <p class="price mt-3"> Order timestamp:</p>
-                    <p class="price mt-3"> {{ transactions[0].timestamp }}</p>
+                    <p class="price mt-3"> {{ transactions[0].order_timestamp }}</p>
                 </div>
                 <div v-else>
                     <p class="card-text">No transactions yet.</p>
@@ -60,15 +61,12 @@ export default {
         getTransactions() {
             this.$http
                 .get("http://localhost:3000/api/transaction/" + this.id)
-                .then(
-                    (response) => {
-                        this.transactions = response.body;
-                        this.transactions.sort(function (a, b) {
-                            return b.date - a.date;
-                        });
-                    },
-                    (response) => { }
-                );
+                .then(response => {
+                    const orders = response.data;
+                    orders.sort((a, b) => new Date(b.order_timestamp) - new Date(a.order_timestamp));
+                    this.transactions = orders;
+                })
+                .catch(error => console.log(error));
         },
 
         handleClick() {
@@ -82,9 +80,9 @@ export default {
         flipCard() {
             this.flipped = !this.flipped;
             const cardCoin = this.$refs.card;
-            
+
             cardCoin.classList.toggle("is-flipped");
-            
+
         },
 
     },
@@ -92,8 +90,6 @@ export default {
 </script>
 
 <style>
-
-
 .card-coin {
     position: relative;
     text-align: center;
@@ -143,17 +139,18 @@ export default {
     transform: rotateY(180deg);
 }
 
-.card-back .card-body{
+.card-back .card-body {
     font-size: 1.3rem;
 }
-.card-coin div{
+
+.card-coin div {
     position: absolute;
     width: 100%;
     backface-visibility: hidden;
     transition: 0.5s;
 }
 
-.btn-container{
+.btn-container {
     position: absolute;
     bottom: 0;
     margin-bottom: 0.5rem;
@@ -162,28 +159,27 @@ export default {
 }
 
 
-.flip-btn:focus{
+.flip-btn:focus {
     outline: none;
 }
 
 /* Media Queries */
 
 @media (max-width: 768px) {
-   .card-coin{
-    width: 15rem;
-    height: 19rem;
-   }  
-   
-   .card-back .card-title{
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-top: -1rem;
+    .card-coin {
+        width: 15rem;
+        height: 19rem;
     }
 
-    .card-back .card-body{
+    .card-back .card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-top: -1rem;
+    }
+
+    .card-back .card-body {
         font-size: 1.1rem;
     }
 
 }
-
 </style>

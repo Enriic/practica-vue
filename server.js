@@ -3,10 +3,11 @@ var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
+var axios = require('axios');
 var paypal = require('paypal-rest-sdk');
 
 paypal.configure({
-    'mode': 'sandbox', //sandbox to avoid real payments
+    'mode': 'sandbox', //sandbox to avoid real payments (live)
     'client_id': 'AXFC5Npdm0A96AhIZBmp9mPurF02e01EfyIQ1izbRrgyWadT6dbh92X313iJbHvfvcI5kZLQmzVqZuBK',
     'client_secret': 'EKqi4tfCU14G-tnFRS7FmqnUpCJOc-8hF4GTTHPGlQ2YMmak2hJjd6LnpCfJxU0rH06N5pz0uNE67tjt'
 });
@@ -36,11 +37,11 @@ app.use(function (req, res, next) {
 
 //PAYPAL PAYMENT
 
-function createPayReq(amount) {
+function createPayReq(amount, product_id) {
     return JSON.stringify({
         'intent': 'sale',
         'redirect_urls': {
-            'return_url': 'http://localhost:3000/process',
+            'return_url': 'http://localhost:3000/process?product_id=' + product_id,
             'cancel_url': 'http://localhost:3000/cancel'
         },
         'payer': {
@@ -51,8 +52,11 @@ function createPayReq(amount) {
                 'total': amount,
                 'currency': 'EUR'
             },
-            'description': 'This is the payment transaction description.'
-        }]
+            'description': 'This is the payment transaction description.',
+
+        }],
+
+
     });
 }
 
@@ -62,23 +66,62 @@ function createPayReq(amount) {
 app.get('/process', function (req, res) {
     var paymentId = req.query.paymentId;
     var payerId = { 'payer_id': req.query.PayerID };
+    var product_id = req.query.product_id;
+    var product = {};
 
-    paypal.payment.execute(paymentId, payerId, function (error, payment) {
-        if (error) {
-            console.error(error);
+    getProductById(product_id, function (response) {
+        if (response) {
+            product = response;
+            paypal.payment.execute(paymentId, payerId, function (error, payment) {
+                if (error) {
+                    console.error(error);
+                } else {
+                    if (payment.state == 'approved') {
+                        // res.redirect('http://localhost:8080/order');
+                        var order = {
+                            'paypal_transaction_id': payment.id,
+                            'order_timestamp': payment.create_time,
+                            'payer_info': payment.payer.payer_info,
+                            'total_amount': payment.transactions[0].amount.total,
+                            'currency': payment.transactions[0].amount.currency,
+                            'product': product,
+                        };
+        
+                        fs.readFile(ORDERS_FILE, function (err, data) {
+                            if (err) {
+                                console.error(err);
+                                process.exit(1);
+                            }
+                            var json = JSON.parse(data);
+                            json.push(order);
+                            fs.writeFile(ORDERS_FILE, JSON.stringify(json, null, 4), function (err) {
+                                if (err) {
+                                    console.error(err);
+                                    process.exit(1);
+                                }
+                            });
+                        });
+        
+                        res.json(payment);
+        
+                    } else {
+                        res.send('payment not successful');
+                    }
+                }
+            });
         } else {
-            if (payment.state == 'approved') {
-                res.send('payment completed successfully');
-            } else {
-                res.send('payment not successful');
-            }
+            console.log("Error getting product by id");
         }
     });
+
+        
+    
+
 });
 
 
 app.get('/cancel', function (req, res) {
-    res.redirect('localhost:8080');
+    res.redirect('http://localhost:8080');
 });
 
 
@@ -86,11 +129,13 @@ app.get('/cancel', function (req, res) {
 //HTTP REQUESTS 
 
 
-app.post('/api/product/paypal', function (req, res) {
-    var product = req.body.product;
+app.post('/api/buy/paypal', function (req, res) {
     var amount = req.body.amount;
+    var product_id = req.body.product_id;
+    console.log("Amount to be paid: " + amount);
+    var reqPay = createPayReq(amount, product_id);
 
-    paypal.payment.create(createPayReq(), function (error, payment) {
+    paypal.payment.create(reqPay, function (error, payment) {
         if (error) {
             console.error(error);
         } else {
@@ -101,14 +146,16 @@ app.post('/api/product/paypal', function (req, res) {
                     'method': linkObj.method
                 };
             })
-    
+
             if (links.hasOwnProperty('approval_url')) {
-                res.redirect(links['approval_url'].href);
+                console.log(links['approval_url'].href);
+                res.send(links['approval_url'].href);
             } else {
                 console.error('no redirect URI present');
             }
         }
     });
+
 });
 
 
@@ -130,7 +177,7 @@ app.get('/api/transaction/:id', function (req, res) {
         }
         var json = JSON.parse(data);
         var orders = json.filter(function (order) {
-            return order.cryptocurrency_id == req.params.id;
+            return order.product.id == req.params.id;
         });
         res.json(orders);
     });
@@ -169,89 +216,25 @@ app.get('/api/product/:id', function (req, res) {
     });
 });
 
-app.post('/api/product/create', function (req, res) {
 
+function getProductById(id, callback) {
     fs.readFile(PRODUCTS_FILE, function (err, data) {
         if (err) {
             console.error(err);
-            process.exit(1);
+            return callback(null);
         }
-        var products = JSON.parse(data);
 
-        var newProduct = {
-            id: Date.now(),
-            name: req.body.name,
-            price: req.body.price,
-        };
-        products.push(newProduct);
-        fs.writeFile(PRODUCTS_FILE, JSON.stringify(products, null, 4), function (err) {
-            if (err) {
-                console.error(err);
-                process.exit(1);
+        var json = JSON.parse(data);
+
+        for (var i = 0; i < json.length; i++) {
+            if (json[i]['id'] == id) {
+                return callback(json[i]);
             }
-            res.json(products);
-        });
+        }
+
+        callback(null);
     });
-});
-
-// app.patch('/api/product/edit/:id', function (req, res) {
-//     fs.readFile(PRODUCTS_FILE, function (err, data) {
-//         if (err) {
-//             console.error(err);
-//             process.exit(1);
-//         }
-//         var products = JSON.parse(data);
-
-//         for (var i = 0; i <= products.length; i++) {
-//             if (products[i]['id'] == req.params.id) {
-//                 var product = products[i];
-//                 product.name = req.body.name;
-//                 product.price = req.body.price;
-
-//                 // products.splice(i, 1);
-//                 // products.push(product);
-
-//                 products.splice(i, 1, product)
-
-//                 //CHANGE DONE -> Line 101 & 102 -> 104
-
-//                 fs.writeFile(PRODUCTS_FILE, JSON.stringify(products, null, 4), function (err) {
-//                     if (err) {
-//                         console.error(err);
-//                         process.exit(1);
-//                     }
-//                     res.json(products);
-//                 });
-//                 break;
-//             }
-//         }
-//     });
-// });
-
-// app.delete('/api/product/delete/:id', function (req, res) {
-//     fs.readFile(PRODUCTS_FILE, function (err, data) {
-//         if (err) {
-//             console.error(err);
-//             process.exit(1);
-//         }
-//         var products = JSON.parse(data);
-
-//         for (var i = 0; i <= products.length; i++) {
-//             if (products[i]['id'] == req.params.id) {
-//                 products.splice(i, 1);
-
-//                 fs.writeFile(PRODUCTS_FILE, JSON.stringify(products, null, 4), function (err) {
-//                     if (err) {
-//                         console.error(err);
-//                         process.exit(1);
-//                     }
-//                     res.json(products);
-//                 });
-//                 break;
-//             }
-//         }
-//     });
-// });
+}
 
 
 app.listen(app.get('port'), function () {
