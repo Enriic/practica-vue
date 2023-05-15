@@ -103,6 +103,7 @@ app.get('/process', function (req, res) {
                         });
         
                         res.json(payment);
+                        //res.redirect('http://localhost:8080/order');  //redirect to order page
         
                     } else {
                         res.send('payment not successful');
