@@ -63,8 +63,12 @@ export default {
                 .get("http://localhost:3000/api/transaction/" + this.id)
                 .then(response => {
                     const orders = response.data;
-                    orders.sort((a, b) => new Date(b.order_timestamp) - new Date(a.order_timestamp));
-                    this.transactions = orders;
+                    if (orders.length > 0) {
+                        orders.sort((a, b) => new Date(b.order_timestamp) - new Date(a.order_timestamp));
+                        this.transactions = orders;
+                    }else{
+                        this.transactions = [];
+                    }
                 })
                 .catch(error => console.log(error));
         },

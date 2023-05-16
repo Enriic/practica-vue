@@ -3,8 +3,8 @@ var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
-var axios = require('axios');
 var paypal = require('paypal-rest-sdk');
+var uuidv4 = require('uuid').v4;    //UUID generator
 
 paypal.configure({
     'mode': 'sandbox', //sandbox to avoid real payments (live)
@@ -60,9 +60,6 @@ function createPayReq(amount, product_id) {
     });
 }
 
-
-
-
 app.get('/process', function (req, res) {
     var paymentId = req.query.paymentId;
     var payerId = { 'payer_id': req.query.PayerID };
@@ -77,8 +74,9 @@ app.get('/process', function (req, res) {
                     console.error(error);
                 } else {
                     if (payment.state == 'approved') {
-                        // res.redirect('http://localhost:8080/order');
+
                         var order = {
+                            'id': uuidv4(),
                             'paypal_transaction_id': payment.id,
                             'order_timestamp': payment.create_time,
                             'payer_info': payment.payer.payer_info,
@@ -86,14 +84,20 @@ app.get('/process', function (req, res) {
                             'currency': payment.transactions[0].amount.currency,
                             'product': product,
                         };
-        
+
                         fs.readFile(ORDERS_FILE, function (err, data) {
                             if (err) {
                                 console.error(err);
                                 process.exit(1);
                             }
-                            var json = JSON.parse(data);
+                        
+                            var json = [];
+                            if (data.length !== 0) {
+                                json = JSON.parse(data);
+                            }
+                        
                             json.push(order);
+                        
                             fs.writeFile(ORDERS_FILE, JSON.stringify(json, null, 4), function (err) {
                                 if (err) {
                                     console.error(err);
@@ -101,10 +105,10 @@ app.get('/process', function (req, res) {
                                 }
                             });
                         });
-        
-                        res.json(payment);
-                        //res.redirect('http://localhost:8080/order');  //redirect to order page
-        
+                        
+
+                        res.redirect('http://localhost:8080/order-resume/' + order.id);  //redirect to order page')
+
                     } else {
                         res.send('payment not successful');
                     }
@@ -115,19 +119,44 @@ app.get('/process', function (req, res) {
         }
     });
 
-        
-    
-
 });
+
+app.get('/api/order/:id', function (req, res) {
+    var orderId = req.params.id;
+
+    getOrderById(orderId, function (err, order) {
+        if (err) {
+            res.status(500).send('Something gone wrong!');
+            return;
+        }
+        if (order) {
+            res.json(order);
+        } else {
+            res.status(404).send('Oh oh, not found...');
+        }
+    });
+});
+
+
+getOrderById = function (id, callback) {
+    fs.readFile(ORDERS_FILE, function (err, data) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        var orders = JSON.parse(data);
+        var order = orders.find(function (order) {
+            return order.id == id;
+        });
+        callback(null, order);
+    });
+}
 
 
 app.get('/cancel', function (req, res) {
     res.redirect('http://localhost:8080');
 });
 
-
-
-//HTTP REQUESTS 
 
 
 app.post('/api/buy/paypal', function (req, res) {
@@ -174,15 +203,26 @@ app.get('/api/transaction/:id', function (req, res) {
     fs.readFile(ORDERS_FILE, function (err, data) {
         if (err) {
             console.error(err);
-            process.exit(1);
+            res.status(500).send('Internal server error');
+            return;
         }
-        var json = JSON.parse(data);
-        var orders = json.filter(function (order) {
-            return order.product.id == req.params.id;
-        });
-        res.json(orders);
+        if (data.length > 0) {
+            var json = JSON.parse(data);
+            var orders = json.filter(function (order) {
+                return order.product.id == req.params.id;
+            });
+            if (orders.length == 0) {
+                res.status(404).send('Oh oh, not found...');
+                return;
+            }
+            res.json(orders);
+        }else{
+            res.json([]);
+        }
+
     });
 });
+
 
 app.get('/api/productsid', function (req, res) {
     fs.readFile(PRODUCTS_FILE, function (err, data) {
@@ -217,23 +257,22 @@ app.get('/api/product/:id', function (req, res) {
     });
 });
 
-
 function getProductById(id, callback) {
     fs.readFile(PRODUCTS_FILE, function (err, data) {
         if (err) {
             console.error(err);
-            return callback(null);
+            return callback(null); // Error al leer el archivo, se invoca el callback con valor nulo
         }
 
         var json = JSON.parse(data);
 
         for (var i = 0; i < json.length; i++) {
             if (json[i]['id'] == id) {
-                return callback(json[i]);
+                return callback(json[i]); // Se encontró el producto, se invoca el callback con el producto
             }
         }
 
-        callback(null);
+        return callback(null); // No se encontró el producto, se invoca el callback con valor nulo
     });
 }
 

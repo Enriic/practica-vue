@@ -1,10 +1,7 @@
 <template>
-
-<div id="order-resume">
-    <p>HOLA</p>
-</div>
-
-
+  <div id="order-resume">
+    <p>{{ order }}</p>
+  </div>
 </template>
 
 <script>
@@ -20,7 +17,7 @@ export default {
   },
   methods: {
     getOrder: function () {
-      this.$http.get('http://localhost:3000/api/transaction/' + this.$route.params.order_paypal_id).then((response) => {
+      this.$http.get('http://localhost:3000/api/order/' + this.$route.params.id).then((response) => {
         this.order = response.body;
       }, (response) => {
 
@@ -28,13 +25,10 @@ export default {
     },
 
   },
-    
+
 };
 
 </script>
 
 
-<style>
-
-
-</style>
+<style></style>

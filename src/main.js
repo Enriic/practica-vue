@@ -27,6 +27,11 @@ const routes = [
         component: AllProducts
     },
     {
+        name: 'order-resume',
+        path: '/order-resume/:id',
+        component: OrderResume
+    },
+    {
         name: 'show_product',
         path: '/:id',
         component: ShowProduct
@@ -36,11 +41,6 @@ const routes = [
         path: '/buy/:id',
         component: PayPal
     },
-    {
-        name: 'order-resume',
-        path: '/order/:id',
-        component: OrderResume
-    }
 
 ];
 
