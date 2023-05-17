@@ -16,7 +16,7 @@
         </span>
 
         <div :class="{ 'search-bar-container': true, 'search-bar-container--active': showSearchBar }">
-          <input type="text" placeholder="Search" v-model="searchTerm" />
+          <input type="text" placeholder="Search" v-model="searchTerm"/>
           <ul v-if="items.length > 0" class="search-results">
             <li v-for="(item, index) in items" :key="index">
               <div class="search-result-item" @click="handleClick(item.id)">
@@ -62,16 +62,12 @@ export default {
       ],
       searchTerm: '',
       items: [],
-      itemsid: [],
       showSearchBar: true,
       showSidebar: false
     };
   },
   watch: {
     searchTerm(newVal) {
-      this.$root.$emit('search', newVal)
-      console.log('Emited ' + newVal)
-
       this.searchProducts(newVal)
     }
   },
@@ -115,7 +111,6 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 /* Navbar */
 

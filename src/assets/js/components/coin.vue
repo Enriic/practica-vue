@@ -6,7 +6,6 @@
                 <div class="card-body">
                     <h3 class="card-title">{{ coin.name }}</h3>
                     <p class="price mt-3">{{ coin.price }}$</p>
-
                 </div>
             </div>
 
@@ -39,6 +38,7 @@ export default {
             coin: {},
             transactions: [],
             flipped: false,
+            order: {}
         };
     },
     created() {
@@ -46,6 +46,7 @@ export default {
         this.getTransactions();
         setInterval(this.refreshCoin, 10000); // refresh every 10 seconds
     },
+   
     methods: {
         getCoin() {
             this.$http
@@ -53,6 +54,7 @@ export default {
                 .then(
                     (response) => {
                         this.coin = response.body;
+                       
                     },
                     (response) => { }
                 );
@@ -66,6 +68,7 @@ export default {
                     if (orders.length > 0) {
                         orders.sort((a, b) => new Date(b.order_timestamp) - new Date(a.order_timestamp));
                         this.transactions = orders;
+                        
                     }else{
                         this.transactions = [];
                     }
@@ -84,12 +87,13 @@ export default {
         flipCard() {
             this.flipped = !this.flipped;
             const cardCoin = this.$refs.card;
-
-            cardCoin.classList.toggle("is-flipped");
-
+            cardCoin.classList.toggle("is-flipped")
         },
 
     },
+  mounted() {
+    this.$on('reload-coin');
+  }
 };
 </script>
 

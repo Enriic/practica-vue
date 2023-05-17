@@ -36,7 +36,6 @@ app.use(function (req, res, next) {
 
 
 //PAYPAL PAYMENT REQUESTS
-
 app.get('/process', function (req, res) {
     var paymentId = req.query.paymentId;
     var payerId = { 'payer_id': req.query.PayerID };
@@ -102,7 +101,6 @@ app.get('/cancel', function (req, res) {
 });
 
 // CREATE PAYMENT 
-
 app.post('/api/buy/paypal', function (req, res) {
     var amount = req.body.amount;
     var product_id = req.body.product_id;
@@ -137,7 +135,6 @@ app.post('/api/buy/paypal', function (req, res) {
 //HTTP REQUEST
 
 // GET ORDER BY ID
-
 app.get('/api/order/:id', function (req, res) {
 
     getOrderById(req.params.id, function (err, order) {
@@ -155,7 +152,6 @@ app.get('/api/order/:id', function (req, res) {
 
 
 // GET ALL ORDERS OF A PRODUCT
-
 app.get('/api/transaction/:id', function (req, res) {
     fs.readFile(ORDERS_FILE, function (err, data) {
         if (err) {
@@ -209,8 +205,10 @@ app.get('/api/product/:id', function (req, res) {
       }
     });
   });
+
   
-  app.get('/api/products', function (req, res) {
+// GET ALL PRODUCTS
+app.get('/api/products', function (req, res) {
     fs.readFile(PRODUCTS_FILE, function (err, data) {
         if (err) {
             console.error(err);
@@ -224,14 +222,12 @@ app.get('/api/product/:id', function (req, res) {
 
 
 // START SERVER
-
 app.listen(app.get('port'), function () {
     console.log('Server started: http://localhost:' + app.get('port') + '/');
 });
 
 
 // functions
-
 
 function getProductById(id, callback) {
     fs.readFile(PRODUCTS_FILE, function (err, data) {
@@ -254,7 +250,7 @@ function getProductById(id, callback) {
 
 function sortProducts(order, products, callback) {
     products.sort(function (a, b) {
-        return order === 'asc' ? parseFloat(a.price) - parseFloat(b.price) : parseFloat(b.price) - parseFloat(a.price);
+        return order === 'desc' ? parseFloat(b.price) - parseFloat(a.price) : parseFloat(a.price) - parseFloat(b.price);
     });
 
     var ids = products.map(function (product) {

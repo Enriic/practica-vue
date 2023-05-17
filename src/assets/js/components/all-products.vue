@@ -1,15 +1,14 @@
 <template>
   <div id="all-products">
 
-    
     <div class="container container-cripto">
-      <select id="order-select" v-model="selectedOrder" @change="handleOrderChange">
-        <option value="asc">Ascending</option>
-        <option value="desc">Descending</option>
+      <select id="order-select" v-model="selectedOrder" @change="handleOrderChange()">
+        <option value="desc" >Descending</option>
+        <option value="asc" >Ascending</option>
       </select>
       <div class="row">
         <div class="col-md-4 col-sm-6 col-lg-3 col-xs-6" v-for="id in productsid" key="id">
-          <coin :id="id"></coin>
+          <coin ref='coinComponent' :id="id"></coin>
         </div>
       </div>
     </div>
@@ -18,11 +17,17 @@
 </template>
 
 <script>
+
+import Coin from './coin.vue';
+
 export default {
+  components: {
+    Coin
+  },
   data() {
     return {
       productsid: [],
-      selectedOrder: 'desc' // Valor inicial de l'ordre
+      selectedOrder: 'desc'  // Ordre per defecte
     };
   },
 
@@ -49,19 +54,23 @@ export default {
 
     handleOrderChange() {
       this.fetchProductIdData();
-    }
+      this.$refs.coinComponent.forEach((coin) => {
+        coin.refreshCoin();
+      });
+    },
+
+    
   }
 };
 </script>
 
 
 <style>
-
 .row {
   margin-right: -7rem;
 }
 
-#order-select{
+#order-select {
   max-width: 150px;
   width: 70%;
   margin-bottom: 1rem;
@@ -80,6 +89,4 @@ export default {
   float: left;
   width: 15%;
 }
-
-
 </style>
