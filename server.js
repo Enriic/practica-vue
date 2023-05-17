@@ -210,6 +210,17 @@ app.get('/api/product/:id', function (req, res) {
     });
   });
   
+  app.get('/api/products', function (req, res) {
+    fs.readFile(PRODUCTS_FILE, function (err, data) {
+        if (err) {
+            console.error(err);
+            process.exit(1);
+        }
+        json = JSON.parse(data);
+        res.json(json);
+    });
+});
+
 
 
 // START SERVER
