@@ -35,30 +35,7 @@ app.use(function (req, res, next) {
 });
 
 
-//PAYPAL PAYMENT
-
-function createPayReq(amount, product_id) {
-    return JSON.stringify({
-        'intent': 'sale',
-        'redirect_urls': {
-            'return_url': 'http://localhost:3000/process?product_id=' + product_id,
-            'cancel_url': 'http://localhost:3000/cancel'
-        },
-        'payer': {
-            'payment_method': 'paypal'
-        },
-        'transactions': [{
-            'amount': {
-                'total': amount,
-                'currency': 'EUR'
-            },
-            'description': 'This is the payment transaction description.',
-
-        }],
-
-
-    });
-}
+//PAYPAL PAYMENT REQUESTS
 
 app.get('/process', function (req, res) {
     var paymentId = req.query.paymentId;
@@ -74,7 +51,6 @@ app.get('/process', function (req, res) {
                     console.error(error);
                 } else {
                     if (payment.state == 'approved') {
-
                         var order = {
                             'id': uuidv4(),
                             'paypal_transaction_id': payment.id,
@@ -90,14 +66,14 @@ app.get('/process', function (req, res) {
                                 console.error(err);
                                 process.exit(1);
                             }
-                        
+
                             var json = [];
                             if (data.length !== 0) {
                                 json = JSON.parse(data);
                             }
-                        
+
                             json.push(order);
-                        
+
                             fs.writeFile(ORDERS_FILE, JSON.stringify(json, null, 4), function (err) {
                                 if (err) {
                                     console.error(err);
@@ -105,9 +81,7 @@ app.get('/process', function (req, res) {
                                 }
                             });
                         });
-                        
-
-                        res.redirect('http://localhost:8080/order-resume/' + order.id);  //redirect to order page')
+                        res.redirect('http://localhost:8080/order-resume/' + order.id);  
 
                     } else {
                         res.send('payment not successful');
@@ -121,43 +95,13 @@ app.get('/process', function (req, res) {
 
 });
 
-app.get('/api/order/:id', function (req, res) {
-    var orderId = req.params.id;
-
-    getOrderById(orderId, function (err, order) {
-        if (err) {
-            res.status(500).send('Something gone wrong!');
-            return;
-        }
-        if (order) {
-            res.json(order);
-        } else {
-            res.status(404).send('Oh oh, not found...');
-        }
-    });
-});
-
-
-getOrderById = function (id, callback) {
-    fs.readFile(ORDERS_FILE, function (err, data) {
-        if (err) {
-            callback(err);
-            return;
-        }
-        var orders = JSON.parse(data);
-        var order = orders.find(function (order) {
-            return order.id == id;
-        });
-        callback(null, order);
-    });
-}
 
 
 app.get('/cancel', function (req, res) {
     res.redirect('http://localhost:8080');
 });
 
-
+// CREATE PAYMENT 
 
 app.post('/api/buy/paypal', function (req, res) {
     var amount = req.body.amount;
@@ -189,15 +133,28 @@ app.post('/api/buy/paypal', function (req, res) {
 });
 
 
-app.get('/api/products', function (req, res) {
-    fs.readFile(PRODUCTS_FILE, function (err, data) {
+
+//HTTP REQUEST
+
+// GET ORDER BY ID
+
+app.get('/api/order/:id', function (req, res) {
+
+    getOrderById(req.params.id, function (err, order) {
         if (err) {
-            console.error(err);
-            process.exit(1);
+            res.status(500).send('Something gone wrong!');
+            return;
         }
-        res.json(JSON.parse(data));
+        if (order) {
+            res.json(order);
+        } else {
+            res.status(404).send('Oh oh, not found...');
+        }
     });
 });
+
+
+// GET ALL ORDERS OF A PRODUCT
 
 app.get('/api/transaction/:id', function (req, res) {
     fs.readFile(ORDERS_FILE, function (err, data) {
@@ -216,7 +173,7 @@ app.get('/api/transaction/:id', function (req, res) {
                 return;
             }
             res.json(orders);
-        }else{
+        } else {
             res.json([]);
         }
 
@@ -224,35 +181,8 @@ app.get('/api/transaction/:id', function (req, res) {
 });
 
 
+// GET ALL IDS OF PRODUCTS SORTED BY ORDER
 app.get('/api/productsid', function (req, res) {
-    fs.readFile(PRODUCTS_FILE, function (err, data) {
-      if (err) {
-        console.error(err);
-        process.exit(1);
-      }
-      var json = JSON.parse(data);
-      var order = req.query.order; 
-  
-      json.sort(function (a, b) {
-        
-        if (order === 'asc') {
-          return parseFloat(a.price) - parseFloat(b.price);
-        } else {
-          return parseFloat(b.price) - parseFloat(a.price);
-        }
-      });
-  
-      var ids = json.map(function (product) {
-        return product.id;
-      });
-  
-      res.json(ids);
-    });
-  });
-  
-
-
-app.get('/api/product/:id', function (req, res) {
     fs.readFile(PRODUCTS_FILE, function (err, data) {
         if (err) {
             console.error(err);
@@ -260,36 +190,103 @@ app.get('/api/product/:id', function (req, res) {
         }
 
         var json = JSON.parse(data);
+        var order = req.query.order;
 
-        for (var i = 0; i <= json.length; i++) {
-            if (json[i]['id'] == req.params.id) {
-                res.json(json[i]);
-                break;
-            }
-        }
+        sortProducts(order, json, function (sortedIds) {
+            res.json(sortedIds);
+        });
     });
 });
+
+
+// GET PRODUCT BY ID
+app.get('/api/product/:id', function (req, res) {
+    getProductById(req.params.id, function (product) {
+      if (product) {
+        res.json(product);
+      } else {
+        res.status(404).send('Product not found');
+      }
+    });
+  });
+  
+
+
+// START SERVER
+
+app.listen(app.get('port'), function () {
+    console.log('Server started: http://localhost:' + app.get('port') + '/');
+});
+
+
+// functions
+
 
 function getProductById(id, callback) {
     fs.readFile(PRODUCTS_FILE, function (err, data) {
         if (err) {
             console.error(err);
-            return callback(null); // Error al leer el archivo, se invoca el callback con valor nulo
+            return callback(null); // Error al llegir el fitxer, es crida el callback amb valor nul
         }
 
         var json = JSON.parse(data);
 
         for (var i = 0; i < json.length; i++) {
             if (json[i]['id'] == id) {
-                return callback(json[i]); // Se encontró el producto, se invoca el callback con el producto
+                return callback(json[i]); // S'ha trobat el producte, es crida el callback amb el producte com a paràmetre
             }
         }
 
-        return callback(null); // No se encontró el producto, se invoca el callback con valor nulo
+        return callback(null); // No s'ha trobat el producte, es crida el callback amb valor nul
     });
 }
 
+function sortProducts(order, products, callback) {
+    products.sort(function (a, b) {
+        return order === 'asc' ? parseFloat(a.price) - parseFloat(b.price) : parseFloat(b.price) - parseFloat(a.price);
+    });
 
-app.listen(app.get('port'), function () {
-    console.log('Server started: http://localhost:' + app.get('port') + '/');
-});
+    var ids = products.map(function (product) {
+        return product.id;
+    });
+
+    callback(ids);
+}
+
+function getOrderById(id, callback) {
+    fs.readFile(ORDERS_FILE, function (err, data) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        var orders = JSON.parse(data);
+        var order = orders.find(function (order) {
+            return order.id == id;
+        });
+        callback(null, order);
+    });
+}
+
+//paypal function
+
+function createPayReq(amount, product_id) {
+    return JSON.stringify({
+        'intent': 'sale',
+        'redirect_urls': {
+            'return_url': 'http://localhost:3000/process?product_id=' + product_id,
+            'cancel_url': 'http://localhost:3000/cancel'
+        },
+        'payer': {
+            'payment_method': 'paypal'
+        },
+        'transactions': [{
+            'amount': {
+                'total': amount,
+                'currency': 'EUR'
+            },
+            'description': 'This is the payment transaction description.',
+
+        }],
+
+    });
+}
