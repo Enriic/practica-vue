@@ -226,17 +226,30 @@ app.get('/api/transaction/:id', function (req, res) {
 
 app.get('/api/productsid', function (req, res) {
     fs.readFile(PRODUCTS_FILE, function (err, data) {
-        if (err) {
-            console.error(err);
-            process.exit(1);
+      if (err) {
+        console.error(err);
+        process.exit(1);
+      }
+      var json = JSON.parse(data);
+      var order = req.query.order; 
+  
+      json.sort(function (a, b) {
+        
+        if (order === 'asc') {
+          return parseFloat(a.price) - parseFloat(b.price);
+        } else {
+          return parseFloat(b.price) - parseFloat(a.price);
         }
-        var json = JSON.parse(data);
-        var ids = json.map(function (product) {
-            return product.id;
-        });
-        res.json(ids);
+      });
+  
+      var ids = json.map(function (product) {
+        return product.id;
+      });
+  
+      res.json(ids);
     });
-});
+  });
+  
 
 
 app.get('/api/product/:id', function (req, res) {
