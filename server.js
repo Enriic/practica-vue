@@ -4,6 +4,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var paypal = require('paypal-rest-sdk');
+const { call } = require('file-loader');
 var uuidv4 = require('uuid').v4;    //UUID generator
 
 paypal.configure({
@@ -153,28 +154,18 @@ app.get('/api/order/:id', function (req, res) {
 
 // GET ALL ORDERS OF A PRODUCT
 app.get('/api/transaction/:id', function (req, res) {
-    fs.readFile(ORDERS_FILE, function (err, data) {
-        if (err) {
-            console.error(err);
-            res.status(500).send('Internal server error');
-            return;
-        }
-        if (data.length > 0) {
-            var json = JSON.parse(data);
-            var orders = json.filter(function (order) {
-                return order.product.id == req.params.id;
-            });
-            if (orders.length == 0) {
-                res.status(404).send('Oh oh, not found...');
-                return;
-            }
-            res.json(orders);
-        } else {
-            res.json([]);
-        }
-
+    findLastTransactionById(req.params.id, function (err, transaction) {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Internal server error');
+      } else if (transaction) {
+        res.json(transaction);
+      } else {
+        res.status(404).send('Oh oh, not found...');
+      }
     });
-});
+  });
+  
 
 
 // GET ALL IDS OF PRODUCTS SORTED BY ORDER
@@ -199,12 +190,21 @@ app.get('/api/productsid', function (req, res) {
 app.get('/api/product/:id', function (req, res) {
     getProductById(req.params.id, function (product) {
       if (product) {
-        res.json(product);
+        findLastTransactionById(req.params.id, function (err, transaction) {
+          if (err) {
+            console.error(err);
+            res.status(500).send('Internal server error');
+          } else if (transaction) {
+            product.last_transaction = transaction;
+          }
+          res.json(product);
+        });
       } else {
         res.status(404).send('Product not found');
       }
     });
   });
+  
 
   
 // GET ALL PRODUCTS
@@ -273,6 +273,29 @@ function getOrderById(id, callback) {
         callback(null, order);
     });
 }
+
+function findLastTransactionById(id, callback) {
+    fs.readFile(ORDERS_FILE, function (err, data) {
+      if (err) {
+        console.error(err);
+        return callback('Internal server error');
+      }
+      if (data.length > 0) {
+        var json = JSON.parse(data);
+        var orders = json.filter(function (order) {
+          return order.product.id == id;
+        });
+        if (orders.length == 0) {
+          return callback(null, null);
+        }
+        orders.sort((a, b) => new Date(b.order_timestamp) - new Date(a.order_timestamp));
+        return callback(null, orders[0]);
+      } else {
+        return callback(null, null);
+      }
+    });
+  }
+  
 
 //paypal function
 

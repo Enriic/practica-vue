@@ -16,11 +16,11 @@
 
             <div class="card-back">
                 <h4 class="card-title mb-3">Last Transaction</h4>
-                <div class="card-body" v-if="transactions.length > 0 && (flipped = true)">
+                <div class="card-body" v-if="coin.last_transaction && (flipped = true)">
                     <p class="price mt-3"> Order price:</p>
-                    <p class="price mt-3"> {{ transactions[0].total_amount }}$</p>
+                    <p class="price mt-3"> {{ coin.last_transaction.total_amount }}$</p>
                     <p class="price mt-3"> Order timestamp:</p>
-                    <p class="price mt-3"> {{ transactions[0].order_timestamp }}</p>
+                    <p class="price mt-3"> {{ coin.last_transaction.order_timestamp }}</p>
                 </div>
                 <div v-else>
                     <p class="card-text">No transactions yet.</p>
@@ -36,14 +36,13 @@ export default {
     data() {
         return {
             coin: {},
-            transactions: [],
+            //transactions: [],
             flipped: false,
-            order: {}
         };
     },
     created() {
         this.getCoin();
-        this.getTransactions();
+        //this.getTransactions();
         setInterval(this.refreshCoin, 10000); // refresh every 10 seconds
     },
    
@@ -54,27 +53,24 @@ export default {
                 .then(
                     (response) => {
                         this.coin = response.body;
-                       
                     },
                     (response) => { }
                 );
         },
 
-        getTransactions() {
-            this.$http
-                .get("http://localhost:3000/api/transaction/" + this.id)
-                .then(response => {
-                    const orders = response.data;
-                    if (orders.length > 0) {
-                        orders.sort((a, b) => new Date(b.order_timestamp) - new Date(a.order_timestamp));
-                        this.transactions = orders;
-                        
-                    }else{
-                        this.transactions = [];
-                    }
-                })
-                .catch(error => console.log(error));
-        },
+        // getTransactions() {
+        //     this.$http
+        //         .get("http://localhost:3000/api/transaction/" + this.id)
+        //         .then(response => {
+        //             const order = response.data;
+        //             if (order) {
+        //                 this.coin.last_transaction = order;
+        //             }//else{
+        //             //     this.transactions = [];
+        //             // }
+        //         })
+        //         .catch(error => console.log(error));
+        // },
 
         handleClick() {
             this.$router.push({ name: "show_product", params: { id: this.id } });
