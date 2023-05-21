@@ -5,26 +5,25 @@
 
         <h3 class="paypal-title"> Process of buying {{ product.name }}</h3>
 
-
         <div class="content">
 
             <div class="paypal-form">
-                <h3 class="form-title">Introduce la cantidad y selecciona la moneda:</h3>
+                <h3 class="form-title">Introduce the amount and select the currency:</h3>
                 <form @submit.prevent="processPayment">
                     <div class="form-group">
-                        <label for="amount">Cantidad:</label>
+                        <label for="amount">Amount:</label>
                         <input type="number" id="amount" v-model.number="amount" step="0.01" min="0" required
                             v-on:change="handleCriptoAmount()">
                     </div>
                     <div class="form-group">
-                        <label for="currency">Moneda:</label>
+                        <label for="currency">Currency:</label>
                         <select id="currency" v-model="currency" required>
                             <option v-for="(option, index) in currencyOptions" :key="index" :value="option.value">
                                 {{ option.label }}
                             </option>
                         </select>
                     </div>
-                    <button class="submit-btn" type="submit" v-on:click="handleMakeOrder()">Pagar con PayPal</button>
+                    <button class="submit-btn" type="submit" v-on:click="handleMakeOrder()">Pay with PayPal</button>
                 </form>
             </div>
 
@@ -97,15 +96,19 @@ export default {
                 this.cripto_amount = this.amount / this.product.price;
         },
 
-        handleMakeOrder(){
-            this.$http.post('http://localhost:3000/api/buy/paypal', {
-                amount: this.amount,
-                product_id: this.product.id,
-            }).then((response) => {
-               window.location.href = response.body;
-            }, (response) => {
+        handleMakeOrder() {
+            if (amount > 0) {
+                this.$http.post('http://localhost:3000/api/buy/paypal', {
+                    amount: this.amount,
+                    product_id: this.product.id,
+                }).then((response) => {
+                    window.location.href = response.body;
+                }, (response) => {
 
-            });
+                });
+            }else{
+                alert('The amount must be greater than 0');
+            }
         },
     }
 
@@ -218,66 +221,65 @@ select {
     border-radius: 0.2cm;
     color: #fff;
     border-color: #232323;
-    background: 	#07477b;
+    background: #07477b;
 }
 
 /* Media queries */
 
-@media screen and (max-width: 768px){
-    .content{
+@media screen and (max-width: 768px) {
+    .content {
         display: block;
     }
 
-    .info-coin{
+    .info-coin {
         padding: 0rem;
     }
 
-    .info-coin-actual{
+    .info-coin-actual {
         font-size: 1.25rem;
     }
 
-    .order-resume p{
+    .order-resume p {
         font-size: 1.5rem;
     }
 
-    .form-title{
+    .form-title {
         margin: 0;
         padding-bottom: 1rem;
         font-size: 1.75rem;
     }
 
-    form{
+    form {
         padding: 0rem;
     }
 
-    .coin-img{
+    .coin-img {
         width: 5rem;
         height: 5rem;
     }
 
-    .price-container{
+    .price-container {
         padding-left: 1rem;
         padding-top: 0rem;
         margin-top: -0.5rem;
     }
 
-    .price-container h4{
+    .price-container h4 {
         font-size: 1.5rem;
     }
 
-    .price-container p{
+    .price-container p {
         font-size: 1.5rem;
     }
 
-    .paypal-title{
+    .paypal-title {
         font-size: 2rem;
     }
 }
 
-@media screen and (min-width: 1500px){
-    .info-coin{
+@media screen and (min-width: 1500px) {
+    .info-coin {
         padding-right: 5rem;
     }
 }
-
 </style>

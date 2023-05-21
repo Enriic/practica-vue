@@ -3,10 +3,10 @@
 
     <div class="container container-cripto">
       <select id="order-select" v-model="selectedOrder" @change="handleOrderChange()">
-        <option value="desc" >Descending</option>
-        <option value="asc" >Ascending</option>
+        <option class="option-order" value="desc" >Descending</option>
+        <option class="option-order" value="asc" >Ascending</option>
       </select>
-      <div class="row">
+      <div class="row" v-if="productsid.length > 0">
         <div class="col-md-4 col-sm-6 col-lg-3 col-xs-6" v-for="id in productsid" key="id">
           <coin ref='coinComponent' :id="id"></coin>
         </div>
@@ -52,6 +52,7 @@ export default {
         );
     },
 
+    //PREGUNTAR PROFE PERQUE NO S'EXECUTA EL METODE DEL COMPONENT COIN
     handleOrderChange() {
       this.fetchProductIdData();
       this.$refs.coinComponent.forEach((coin) => {
@@ -88,5 +89,26 @@ export default {
   padding: 1rem;
   float: left;
   width: 15%;
+}
+
+/*Media queries*/
+@media screen and (max-width: 768px) {
+  .container-cripto {
+    width: 100%;
+    border-left: none;
+    border-top: 2px rgb(225, 224, 224) solid;
+  }
+
+  #order-select{
+    margin-top: 1rem;
+    max-height: 35px;
+    width: 70%;
+    font-size: 1.15rem;
+  }
+
+  .option-order{
+    font-size: 1rem;
+  }
+
 }
 </style>

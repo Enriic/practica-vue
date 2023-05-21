@@ -291,8 +291,8 @@ input:focus {
   position: absolute;
   top: 0;
   left: 0;
-  width: 30%;
-  max-width: 280px;
+  width: 40%;
+  max-width: 350px;
   height: 100%;
   transform: translateX(-100%);
   background-color: #f5f5f5;
@@ -310,7 +310,7 @@ input:focus {
 
 /* Media Queries */
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
 
   .container-navbar {
     flex-direction: row;
@@ -366,7 +366,15 @@ input:focus {
     transform: scaleX(1);
   }
 
+  .sidebar{
+    display: none;
+  }
+
   .sidebar--active {
+    font-size: 1rem;
+    margin-left: -2rem;
+    padding-right: 1rem;
+    display: flex;
     margin-top: 10rem;
     position: fixed;
     transform: translateX(0);

@@ -175,7 +175,10 @@ app.get('/api/productsid', function (req, res) {
             console.error(err);
             process.exit(1);
         }
-
+        if (data.length === 0) {
+            res.json([]);
+            return
+        }
         var json = JSON.parse(data);
         var order = req.query.order;
 

@@ -1,44 +1,45 @@
 [
-    {
-      "id": 1,
-      "name": "Bitcoin",
-      "price": "57834.50",
-      "description":"Bitcoin es una criptomoneda que se crea y distribuye por redes de pares, conocidas comúnmente como P2P (peer to peer). \nEstas redes permiten el intercambio directo de información sin necesidad de servidores fijos. El proceso de generación de BTC es a través de minería de criptomonedas.El Bitcoin fue creado por Satoshi Nakamoto en el 2009, junto con el software que lo sustenta.",
-      "imageURL":"https://th.bing.com/th/id/OIP.WxQIYr4LyUI6-8YhyxS5egHaHa?pid=ImgDet&rs=1"
-    },
-    {
-      "id": 2,
-      "name": "Ethereum",
-      "price": "1965.85",
-      "description": "Ethereum fue concebido en 2013 por el programador Vitalik Buterin. Otros fundadores de Ethereum fueron Gavin Wood, Charles Hoskinson, Anthony Di Iorio y Joseph Lubin. En 2014, el trabajo de desarrollo comenzó y fue financiado por crowdfunding, y la red se puso en marcha el 30 de julio de 2015. Ethereum permite a cualquiera desplegar aplicaciones descentralizadas permanentes e inmutables en él, con las que los usuarios pueden interactuar.",
-      "imageURL":"https://th.bing.com/th/id/OIP.ZZSxbwfHx0kf4TNqEDTJ3QHaHa?pid=ImgDet&rs=1"
-    },
-    {
-      "id": 3,
-      "name": "Binance Coin",
-      "price": "278.44",
-      "description": "Binance Coin es la criptomoneda nativa de la plataforma de intercambio de criptomonedas Binance. Fue lanzada en julio de 2017, y desde entonces ha sido la moneda de pago para los usuarios de la plataforma.",
-      "imageURL":"https://th.bing.com/th/id/OIP.Ng3nfw8n5NxxdajMG02H6wHaHa?pid=ImgDet&rs=1"
-    },
-    {
-      "id": 4,
-      "name": "Cardano",
-      "price": "1.16",
-      "description": "Cardano es una plataforma de código abierto que permite a los desarrolladores crear aplicaciones descentralizadas (dApps) y smart contracts.",
-      "imageURL":"https://icons-for-free.com/iconfiles/png/512/cardano+icon-1320162855683510157.png"
-    },
-    {
-      "id": 5,
-      "name": "Polkadot",
-      "price": "34.60",
-      "description": "Polkadot es una plataforma de código abierto que permite a los desarrolladores crear aplicaciones descentralizadas (dApps) y smart contracts.",
-      "imageURL":"https://th.bing.com/th/id/OIP.Gh6uJ6s3BXDDI5LQZ73r9AHaHa?pid=ImgDet&rs=1"
-    },
-    {
-      "id": 6,
-      "name": "Litecoin",
-      "price": "206.94",
-      "description": "Litecoin es una criptomoneda basada en el protocolo de código abierto de Bitcoin. Fue lanzada en 2011 por el ex empleado de Google Charlie Lee. Fue lanzada en 2011 por el ex empleado de Google Charlie Lee.",
-      "imageURL":"https://vignette.wikia.nocookie.net/cryptocurrency/images/5/5d/Litecoin.png/revision/latest?cb=20140316100431"
-    }
-  ]
+  {
+    "id": 1,
+    "name": "Bitcoin",
+    "price": "57834.50",
+    "description":"Bitcoin es una criptomoneda que se crea y distribuye por redes de pares, conocidas comúnmente como P2P (peer to peer). \nEstas redes permiten el intercambio directo de información sin necesidad de servidores fijos. El proceso de generación de BTC es a través de minería de criptomonedas.El Bitcoin fue creado por Satoshi Nakamoto en el 2009, junto con el software que lo sustenta.",
+    "imageURL":"https://th.bing.com/th/id/OIP.WxQIYr4LyUI6-8YhyxS5egHaHa?pid=ImgDet&rs=1"
+  },
+  {
+    "id": 2,
+    "name": "Ethereum",
+    "price": "1965.85",
+    "description": "Ethereum fue concebido en 2013 por el programador Vitalik Buterin. Otros fundadores de Ethereum fueron Gavin Wood, Charles Hoskinson, Anthony Di Iorio y Joseph Lubin. En 2014, el trabajo de desarrollo comenzó y fue financiado por crowdfunding, y la red se puso en marcha el 30 de julio de 2015. Ethereum permite a cualquiera desplegar aplicaciones descentralizadas permanentes e inmutables en él, con las que los usuarios pueden interactuar.",
+    "imageURL":"https://th.bing.com/th/id/OIP.ZZSxbwfHx0kf4TNqEDTJ3QHaHa?pid=ImgDet&rs=1"
+  },
+  {
+    "id": 3,
+    "name": "Binance Coin",
+    "price": "278.44",
+    "description": "Binance Coin es la criptomoneda nativa de la plataforma de intercambio de criptomonedas Binance. Fue lanzada en julio de 2017, y desde entonces ha sido la moneda de pago para los usuarios de la plataforma.",
+    "imageURL":"https://th.bing.com/th/id/OIP.Ng3nfw8n5NxxdajMG02H6wHaHa?pid=ImgDet&rs=1"
+  },
+  {
+    "id": 4,
+    "name": "Cardano",
+    "price": "1.16",
+    "description": "Cardano es una plataforma de código abierto que permite a los desarrolladores crear aplicaciones descentralizadas (dApps) y smart contracts.",
+    "imageURL":"https://icons-for-free.com/iconfiles/png/512/cardano+icon-1320162855683510157.png"
+  },
+  {
+    "id": 5,
+    "name": "Polkadot",
+    "price": "34.60",
+    "description": "Polkadot es una plataforma de código abierto que permite a los desarrolladores crear aplicaciones descentralizadas (dApps) y smart contracts.",
+    "imageURL":"https://th.bing.com/th/id/OIP.Gh6uJ6s3BXDDI5LQZ73r9AHaHa?pid=ImgDet&rs=1"
+  },
+  {
+    "id": 6,
+    "name": "Litecoin",
+    "price": "206.94",
+    "description": "Litecoin es una criptomoneda basada en el protocolo de código abierto de Bitcoin. Fue lanzada en 2011 por el ex empleado de Google Charlie Lee. Fue lanzada en 2011 por el ex empleado de Google Charlie Lee.",
+    "imageURL":"https://vignette.wikia.nocookie.net/cryptocurrency/images/5/5d/Litecoin.png/revision/latest?cb=20140316100431"
+  }
+  
+]

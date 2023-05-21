@@ -92,6 +92,18 @@ export default {
   margin-right: 1rem;
 }
 
+@media screen and (max-width: 768px) {
+
+  .title-order-resume{
+    margin-top: -1rem;
+    font-size: 1.75rem;
+  }
+
+  .order-detail{
+    font-size: 1.25rem;
+  }
+}
+  
 
 
 
