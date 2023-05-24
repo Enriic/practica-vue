@@ -24,6 +24,11 @@
                         </select>
                     </div>
                     <button class="submit-btn" type="submit" v-on:click="handleMakeOrder()">Pay with PayPal</button>
+                    <div class="addtocart-btn" v-on:click="handleAddToCartClick()">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        <span class="addtocart-text">Add to cart</span>
+                    </div>
+
                 </form>
             </div>
 
@@ -57,8 +62,9 @@
 
 <script>
 
+import store from './../../../store.js';
 export default {
-
+    store,
     data() {
         return {
             product: {},
@@ -97,7 +103,7 @@ export default {
         },
 
         handleMakeOrder() {
-            if (amount > 0) {
+            if (this.amount > 0) {
                 this.$http.post('http://localhost:3000/api/buy/paypal', {
                     amount: this.amount,
                     product_id: this.product.id,
@@ -106,10 +112,25 @@ export default {
                 }, (response) => {
 
                 });
-            }else{
-                alert('The amount must be greater than 0');
-            }
+            } else alert('Amount must be greather than 0!')
         },
+
+        handleAddToCartClick() {
+            if (this.amount > 0) {
+                let order = {
+                    id: this.product.id,
+                    name: this.product.name,
+                    amount: this.amount,
+                    currency: this.currency,
+                };
+                this.$store.commit('addToCart', order);
+                console.log(this.$store.state.cart);
+                
+            } else {
+                alert('Amount must be greater than 0!');
+            }
+        }
+
     }
 
 }
@@ -222,6 +243,38 @@ select {
     color: #fff;
     border-color: #232323;
     background: #07477b;
+}
+
+.addtocart-btn {
+    outline: none;
+    margin-top: 1.2rem;
+    background-color: #cbe149;
+    height: 3.5rem;
+    margin-top: 1rem;
+    max-width: 350px;
+    max-height: 35px;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.fa-shopping-cart {
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding-right: 1rem;
+    color: rgb(0, 0, 0);
+}
+
+.addtocart-text {
+    font-family: Arial;
+    font-weight: bold;
+}
+
+.addtocart-btn:hover {
+    background: #b3c741;
+    outline: none;
 }
 
 /* Media queries */

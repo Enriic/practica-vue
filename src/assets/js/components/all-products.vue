@@ -7,7 +7,7 @@
         <option class="option-order" value="asc" >Ascending</option>
       </select>
       <div class="row" v-if="productsid.length > 0">
-        <div class="col-md-4 col-sm-6 col-lg-3 col-xs-6" v-for="id in productsid" key="id">
+        <div class="col-md-4 col-sm-6 col-lg-3 col-xs-6" v-for="id in productsid" :key="id">
           <coin ref='coinComponent' :id="id"></coin>
         </div>
       </div>
@@ -55,9 +55,6 @@ export default {
     //PREGUNTAR PROFE PERQUE NO S'EXECUTA EL METODE DEL COMPONENT COIN
     handleOrderChange() {
       this.fetchProductIdData();
-      this.$refs.coinComponent.forEach((coin) => {
-        coin.refreshCoin();
-      });
     },
 
     

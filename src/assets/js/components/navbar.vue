@@ -16,7 +16,7 @@
         </span>
 
         <div :class="{ 'search-bar-container': true, 'search-bar-container--active': showSearchBar }">
-          <input type="text" placeholder="Search" v-model="searchTerm"/>
+          <input type="text" placeholder="Search" v-model="searchTerm" />
           <ul v-if="items.length > 0" class="search-results">
             <li v-for="(item, index) in items" :key="index">
               <div class="search-result-item" @click="handleClick(item.id)">
@@ -29,6 +29,30 @@
           </ul>
         </div>
       </div>
+
+      <div class="nav-item cart" @mouseover="showCartItems = true" @mouseleave="showCartItems = false">
+        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        <div class="cart-popup" v-if="showCartItems" @mouseover="showCartItems = true">
+          <h4>Your Cart</h4>
+          <ul>
+            <li v-for="product in cartItems" :key="product.id" class="cart-item">
+              <div class="item-info">
+                <div class="item-details">
+                  <h5>{{ product.name }}</h5>
+                  <span class="item-price">{{ product.amount }} EUR</span>
+                </div>
+                <span class="remove-button" @click="removeFromCart(product.id)">
+                  <i class="fas fa-trash"></i>
+                </span>
+              </div>
+            </li>
+          </ul>
+          <div v-if="cartItems.length === 0" class="empty-cart">
+            Your cart is empty.
+          </div>
+        </div>
+      </div>
+
 
 
       <span class="toggle-span" v-on:click="handleSideBarClick()">
@@ -51,8 +75,12 @@
 </template>
 
 <script>
+
+import store from './../../../store.js';
+
 export default {
   name: 'navbar',
+  store,
   data() {
     return {
       navItems: [
@@ -63,8 +91,13 @@ export default {
       searchTerm: '',
       items: [],
       showSearchBar: true,
-      showSidebar: false
+      showSidebar: false,
+      showCartItems: false,
+      cartItems: [],
     };
+  },
+  created() {
+    this.cartItems = this.$store.state.cart
   },
   watch: {
     searchTerm(newVal) {
@@ -104,8 +137,13 @@ export default {
     },
     handleNavItemClick() {
       this.showSidebar = false
-    }
+    },
+    removeFromCart(id) {
+      this.$store.commit('removeFromCart', id)
+      this.cartItems = this.$store.state.cart
+    },
     
+
   }
 };
 </script>
@@ -299,12 +337,63 @@ input:focus {
   z-index: 1;
 }
 
-.sidebar-menu{
+.sidebar-menu {
   padding-top: 1rem;
 }
 
-.sidebar-menu .nav-item{
+.sidebar-menu .nav-item {
   padding-bottom: 1rem;
+}
+
+.fa-shopping-cart {
+  transition: all 0.2s ease-in-out;
+  margin-right: 0.5rem;
+}
+
+.fa-shopping-cart:hover {
+  cursor: pointer;
+  transform: scale(1.3);
+}
+
+/* PopUp Cart */
+
+.cart{
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-popup {
+  margin-top: 2rem;
+  position: absolute;
+  top: 20;
+  right: 6%;
+  width: 100%;
+  max-width: 300px;
+  background-color: white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 10;
+}
+
+.item-details {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  float: left;
+  margin-bottom: 1rem;
+}
+
+.item-info{
+  margin-bottom: 1px solid black;
+}
+
+.remove-button {
+  align-items: center;
+  margin-right: 1rem;
+  float: right;
+  margin-left: 1rem;
+  font-size: 1.5rem;
+  color: #000000;
 }
 
 
@@ -366,7 +455,7 @@ input:focus {
     transform: scaleX(1);
   }
 
-  .sidebar{
+  .sidebar {
     display: none;
   }
 

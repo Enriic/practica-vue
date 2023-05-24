@@ -31,8 +31,10 @@ body{
 </style>
 
 <script>
+import store from './store.js';
     export default{
-        
+        name:'App',
+        store,
         data(){
             return{
 

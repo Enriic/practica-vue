@@ -21,6 +21,11 @@
                         </svg>
                         <button class="btn btn-buy-coin">Buy with PayPal</button>
                     </div>
+
+                    <div class="addtocart-btn-container" v-on:click="handleBuyClick()">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        <span class="addtocart-text">Add to cart</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -141,6 +146,7 @@ hr {
 }
 
 .btn-buy-coin {
+    font-family: Arial;
     background: none;
     outline: none;
     color: rgb(255, 253, 253);
@@ -157,6 +163,46 @@ hr {
     width: 13rem;
     height: 13rem;
 }
+
+.addtocart-btn-container{
+    outline: none;
+    margin-top: 1.2rem;
+    background-color: #cbe149;
+    height: 3.5rem;
+    margin-left: 7rem;
+    margin-right: 7rem;
+    max-width: 100%;
+    border-radius: 1rem;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.fa-shopping-cart{
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding-right: 1rem;
+    color: rgb(0, 0, 0);
+}
+
+.addtocart-text{
+    font-family: Arial;
+    font-weight: bold;
+}
+
+.addtocart-btn-container:hover{
+    background: #b3c741;
+    outline: none;
+}
+
+.addtocart-btn-container:focus{
+    outline: none;
+}
+
+
+
+
 
 
 /*Media Queries*/
@@ -193,6 +239,8 @@ hr {
         width: 10rem;
         height: 10rem;
     }
+
+    
 
 }
 

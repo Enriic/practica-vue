@@ -51,6 +51,8 @@ export default {
                 .then(
                     (response) => {
                         this.coin = response.body;
+                        //console.log(this.coin.last_transaction.order_timestamp);
+                        if(this.coin.last_transaction)
                         this.coin.last_transaction.order_timestamp = new Date(this.coin.last_transaction.order_timestamp).toLocaleString();
                     },
                     (response) => { }
