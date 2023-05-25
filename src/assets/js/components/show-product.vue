@@ -44,7 +44,7 @@ export default {
         }
     },
     created() {
-        this.getProduct()
+        this.getProduct();
     },
     methods: {
         getProduct: function () {
@@ -169,11 +169,12 @@ hr {
     margin-top: 1.2rem;
     background-color: #cbe149;
     height: 3.5rem;
+    padding: 0.5rem;
     margin-left: 7rem;
     margin-right: 7rem;
     max-width: 100%;
     border-radius: 1rem;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -202,9 +203,6 @@ hr {
 
 
 
-
-
-
 /*Media Queries*/
 
 @media screen and (max-width: 1080px) {
@@ -230,10 +228,12 @@ hr {
         margin-bottom: 2rem;
     }
 
-    .coin-buy-container {
+    .coin-buy-container, .addtocart-btn-container {
         margin-left: 0;
         margin-right: 0;
     }
+
+    
 
     .product-img {
         width: 10rem;
@@ -268,10 +268,11 @@ hr {
         margin-bottom: 2rem;
     }
 
-    .coin-buy-container {
+    .coin-buy-container, .addtocart-btn-container {
         margin-left: 0;
         margin-right: 0;
     }
+
 
     .product-img {
         width: 8rem;

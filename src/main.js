@@ -19,6 +19,7 @@ const AllProducts = require('./assets/js/components/all-products.vue');
 const ShowProduct = require('./assets/js/components/show-product.vue');
 const PayPal = require('./assets/js/components/paypal-coin.vue');
 const OrderResume = require('./assets/js/components/order-resume.vue');
+const Cart = require('./assets/js/components/buy-from-cart.vue');
 
 const routes = [
     {
@@ -41,6 +42,11 @@ const routes = [
         path: '/buy/:id',
         component: PayPal
     },
+    {
+        name: 'buy_from_cart',
+        path: '/cart',
+        component: Cart
+    }
 
 ];
 

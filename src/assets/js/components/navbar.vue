@@ -30,12 +30,12 @@
         </div>
       </div>
 
-      <div class="nav-item cart" @mouseover="showCartItems = true" @mouseleave="showCartItems = false">
-        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+      <div class="nav-item cart" @mouseover="showCartItems = true" @mouseleave="showCartItems = false" @click="handleCartClick()">
+        <i class="fa fa-shopping-cart" aria-hidden="true" ></i>
         <div class="cart-popup" v-if="showCartItems" @mouseover="showCartItems = true">
           <h4>Your Cart</h4>
           <ul>
-            <li v-for="product in cartItems" :key="product.id" class="cart-item">
+            <li v-for="(product,i) in cartItems" :key="i" class="cart-item">
               <div class="item-info">
                 <div class="item-details">
                   <h5>{{ product.name }}</h5>
@@ -142,6 +142,9 @@ export default {
       this.$store.commit('removeFromCart', id)
       this.cartItems = this.$store.state.cart
     },
+    handleCartClick() {
+      this.$router.push({ name: 'buy_from_cart' })
+    }
     
 
   }
@@ -363,6 +366,7 @@ input:focus {
 }
 
 .cart-popup {
+  border-radius: 0.2cm;
   margin-top: 2rem;
   position: absolute;
   top: 20;

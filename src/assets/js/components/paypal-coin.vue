@@ -122,6 +122,7 @@ export default {
                     name: this.product.name,
                     amount: this.amount,
                     currency: this.currency,
+                    imageURL: this.product.imageURL,
                 };
                 this.$store.commit('addToCart', order);
                 console.log(this.$store.state.cart);
@@ -236,13 +237,20 @@ select {
 }
 
 .submit-btn {
+    font-family: Arial;
+    font-weight: 540;
     height: 3.5rem;
     max-height: 35px;
     max-width: 350px;
     border-radius: 0.2cm;
     color: #fff;
     border-color: #232323;
-    background: #07477b;
+    background: #0a60a5;
+}
+
+.submit-btn:hover {
+    background: #094f88;
+    outline: none;
 }
 
 .addtocart-btn {
