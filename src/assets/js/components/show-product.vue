@@ -56,7 +56,7 @@ export default {
         },
 
         handleBuyClick: function () {
-            this.$router.push({ name: "paypal-coin", params: {id: this.$route.params.id} });
+            this.$router.push({ name: "paypal-coin", params: { id: this.$route.params.id } });
         }
     }
 }
@@ -164,7 +164,7 @@ hr {
     height: 13rem;
 }
 
-.addtocart-btn-container{
+.addtocart-btn-container {
     outline: none;
     margin-top: 1.2rem;
     background-color: #cbe149;
@@ -180,24 +180,24 @@ hr {
     cursor: pointer;
 }
 
-.fa-shopping-cart{
+.fa-shopping-cart {
     font-weight: bold;
     font-size: 1.5rem;
     padding-right: 1rem;
     color: rgb(0, 0, 0);
 }
 
-.addtocart-text{
+.addtocart-text {
     font-family: Arial;
     font-weight: bold;
 }
 
-.addtocart-btn-container:hover{
+.addtocart-btn-container:hover {
     background: #b3c741;
     outline: none;
 }
 
-.addtocart-btn-container:focus{
+.addtocart-btn-container:focus {
     outline: none;
 }
 
@@ -228,19 +228,20 @@ hr {
         margin-bottom: 2rem;
     }
 
-    .coin-buy-container, .addtocart-btn-container {
+    .coin-buy-container,
+    .addtocart-btn-container {
         margin-left: 0;
         margin-right: 0;
     }
 
-    
+
 
     .product-img {
         width: 10rem;
         height: 10rem;
     }
 
-    
+
 
 }
 
@@ -268,7 +269,8 @@ hr {
         margin-bottom: 2rem;
     }
 
-    .coin-buy-container, .addtocart-btn-container {
+    .coin-buy-container,
+    .addtocart-btn-container {
         margin-left: 0;
         margin-right: 0;
     }

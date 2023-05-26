@@ -10,19 +10,11 @@
         </div>
         <div class="order-detail">
           <span class="detail-label">Item Purchased:</span>
-          <span class="detail-value">{{ order.product.name }}</span>
+          <span class="detail-value">{{ order_product_name }}</span>
         </div>
         <div class="order-detail">
           <span class="detail-label">Purchase Price:</span>
           <span class="detail-value">{{ order.total_amount }} {{ order.currency }}</span>
-        </div>
-        <div class="order-detail">
-          <span class="detail-label">Product Price:</span>
-          <span class="detail-value">{{ order.product.price }} {{ order.currency }}</span>
-        </div>
-        <div class="order-detail">
-          <span class="detail-label">Amount:</span>
-          <span class="detail-value">{{ product_amount }} of {{ order.product.name }}</span>
         </div>
         <div class="order-detail">
           <span class="detail-label">Shipping Address:</span>
@@ -57,7 +49,7 @@ export default {
       this.$http.get('http://localhost:3000/api/order/' + this.$route.params.id).then((response) => {
         this.order = response.body;
         this.order.order_timestamp = new Date(this.order.order_timestamp).toLocaleString();
-        this.product_amount = this.order.total_amount / this.order.product.price;
+        this.order_product_name = this.order.product.map(product => product.name).join(' & ')
       }, (response) => {
 
       });

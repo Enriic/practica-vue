@@ -44,7 +44,7 @@ const routes = [
     },
     {
         name: 'buy_from_cart',
-        path: '/cart',
+        path: '/cart/shop/pay',
         component: Cart
     }
 

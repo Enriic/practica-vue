@@ -41,9 +41,6 @@
                   <h5>{{ product.name }}</h5>
                   <span class="item-price">{{ product.amount }} EUR</span>
                 </div>
-                <span class="remove-button" @click="removeFromCart(product.id)">
-                  <i class="fas fa-trash"></i>
-                </span>
               </div>
             </li>
           </ul>
@@ -137,10 +134,6 @@ export default {
     },
     handleNavItemClick() {
       this.showSidebar = false
-    },
-    removeFromCart(id) {
-      this.$store.commit('removeFromCart', id)
-      this.cartItems = this.$store.state.cart
     },
     handleCartClick() {
       this.$router.push({ name: 'buy_from_cart' })

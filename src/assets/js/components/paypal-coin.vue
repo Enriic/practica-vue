@@ -23,8 +23,8 @@
                             </option>
                         </select>
                     </div>
-                    <button class="submit-btn" type="submit" v-on:click="handleMakeOrder()">Pay with PayPal</button>
-                    <div class="addtocart-btn" v-on:click="handleAddToCartClick()">
+                    <button class="submit-btn" type="submit" @click="handleMakeOrder()">Pay with PayPal</button>
+                    <div class="addtocart-btn" @click="handleAddToCartClick()">
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                         <span class="addtocart-text">Add to cart</span>
                     </div>
@@ -103,11 +103,19 @@ export default {
         },
 
         handleMakeOrder() {
-            if (this.amount > 0) {
-                this.$http.post('http://localhost:3000/api/buy/paypal', {
+            
+            const data =
+                [{
                     amount: this.amount,
                     product_id: this.product.id,
-                }).then((response) => {
+                    name: this.product.name,
+                    price: this.product.price
+                }];
+
+                
+            if (this.amount > 0) {
+                this.$http.post('http://localhost:3000/api/buy/paypal', data).then((response) => {
+                    
                     window.location.href = response.body;
                 }, (response) => {
 
@@ -118,6 +126,7 @@ export default {
         handleAddToCartClick() {
             if (this.amount > 0) {
                 let order = {
+                    price: this.product.price,
                     id: this.product.id,
                     name: this.product.name,
                     amount: this.amount,
@@ -126,7 +135,7 @@ export default {
                 };
                 this.$store.commit('addToCart', order);
                 console.log(this.$store.state.cart);
-                
+
             } else {
                 alert('Amount must be greater than 0!');
             }
