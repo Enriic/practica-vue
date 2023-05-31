@@ -430,8 +430,9 @@ input:focus {
   }
 
   .fa-search {
-    position: absolute;
-    display: none;
+    position: relative;
+    display: flex;
+    margin-bottom: 0.5rem;
   }
 
   .search-bar-container {
